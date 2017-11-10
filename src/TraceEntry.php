@@ -81,10 +81,12 @@ class TraceEntry
 
     public function getCode()
     {
-        $syntaxHl = new SyntaxHighlighter();
-        $syntaxHl->setFileSyntax($this->fileSyntax);
-        $syntaxHl->setFilePath($this->filePath);
-        $syntaxHl->selectLine($this->line);
-        return $syntaxHl->generate(['no-style' => true]);
+        if (\file_exists($this->filePath)) {
+            $syntaxHl = new SyntaxHighlighter();
+            $syntaxHl->setFileSyntax($this->fileSyntax);
+            $syntaxHl->setFilePath($this->filePath);
+            $syntaxHl->selectLine($this->line);
+            return $syntaxHl->generate(['no-style' => true]);
+        }
     }
 }

@@ -2,24 +2,27 @@
 hideAllCodes = function()
 {
     var codes = document.getElementsByClassName('source-code');
-    for (code of codes) {
-        code.style.display = 'none';
+    for (let i=0; i<codes.length; i++) {
+        codes[i].style.display = 'none';
     }
 }
 
 removeTraceEntrySelection = function()
 {
     var traceEntries = document.getElementsByClassName('trace-entry');
-    for (traceEntry of traceEntries) {
-        traceEntry.classList.remove('trace-entry-selected');
+
+    for (let i=0; i<traceEntries.length; i++) {
+        //console.log(traceEntries[i]);
+        traceEntries[i].classList.remove('trace-entry-selected');
     }
 }
 
 registertraceEntryClick = function()
 {
     var traceEntries = document.getElementsByClassName('trace-entry');
-    for (traceEntry of traceEntries) {
-        traceEntry.onclick = function(element) {
+
+    for (let i=0; i<traceEntries.length; i++) {
+        traceEntries[i].onclick = function(element) {
             removeTraceEntrySelection();
             hideAllCodes();
             selectTraceEntry(this);

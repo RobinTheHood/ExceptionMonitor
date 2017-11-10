@@ -6,8 +6,8 @@ class ExceptionMonitor
     private static $fileStyle = __DIR__ . '/css/style.css';
     private static $fileScript = __DIR__ . '/js/script.js';
 
-    private static $fileStyleSyntax = __DIR__ . '/../vendor/robinthehood/syntax-highlighter/styles/default.css';
-    private static $fileLanguage = __DIR__ . '/../vendor/robinthehood/syntax-highlighter/languages/php_lang.php';
+    private static $fileStyleSyntax = __DIR__ . '/../../syntax-highlighter/styles/default.css';
+    private static $fileLanguage = __DIR__ . '/../../syntax-highlighter/languages/php_lang.php';
 
     public static function register($options = [])
     {
