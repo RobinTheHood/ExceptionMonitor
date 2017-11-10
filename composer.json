@@ -1,0 +1,21 @@
+{
+    "name": "robinthehood/exception-monitor",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Robin Wieschendorf",
+            "email": "mail@robinwieschendorf.de"
+        }
+    ],
+    "require": {
+        "robinthehood/syntax-highlighter": "^0.1.0",
+        "robinthehood/tokenizer": "^0.1.0",
+        "robinthehood/terminal": "^0.1.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "ExceptionMonitor\\": "src/"
+        }
+
+    }
+}
