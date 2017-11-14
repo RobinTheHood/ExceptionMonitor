@@ -1,7 +1,7 @@
 {
     "name": "robinthehood/exception-monitor",
     "type": "library",
-    "description": "ExceptionMonitor gives you nice looking PHP Error Messages. If you wish more features feel free to contribute.",
+    "description": "ExceptionMonitor gives you nice looking PHP Error Messages.",
     "keywords": ["nice looking", "errorhandling", "error", "php"],
     "license": "MIT",
     "authors": [
