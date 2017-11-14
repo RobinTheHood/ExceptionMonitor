@@ -1,13 +1,19 @@
 {
     "name": "robinthehood/exception-monitor",
     "type": "library",
+    "description": "ExceptionMonitor gives you nice looking PHP Error Messages. If you wish more features feel free to contribute.",
+    "keywords": ["database", "migration", "git"],
+    "license": "MIT",
     "authors": [
         {
             "name": "Robin Wieschendorf",
-            "email": "mail@robinwieschendorf.de"
+            "email": "mail@robinwieschendorf.de",
+            "homepage": "http://robinwieschendorf.de",
+            "role": "Project Founder"
         }
     ],
     "require": {
+        "php": "^5.6 || ^7.0",
         "robinthehood/syntax-highlighter": "^0.1.0",
         "robinthehood/tokenizer": "^0.1.0",
         "robinthehood/terminal": "^0.1.1"
