@@ -1,5 +1,7 @@
 body {
     margin: 0px;
+    box-sizing: content-box;
+
     background-color: #191C21;
 }
 
@@ -9,15 +11,18 @@ body {
     font-family: 'BlinkMacSystemFont', 'Lucida Grande', 'Segoe UI', Ubuntu, Cantarell, sans-serif;
 
     height: 100%;
-    min-height: 100%;
-    max-height: 100%;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
 }
 
 .exception-monitor .header-frame {
     border-bottom: 1px solid #131418;
+
     padding: 20px;
+    min-height: 50px;
+    height: 50px;
+    overflow: hidden;
 }
 
 .exception-monitor .header-frame .exception-class {
@@ -31,15 +36,16 @@ body {
 }
 
 .exception-monitor .content-frame {
-    height: 100%;
-    width: 100%;
     display: flex;
+    height: calc(100% - 90px);
 }
 
 .exception-monitor .trace-frame {
-    width: 450px;
     border-right: 1px solid #131418;
-    overflow: scroll;
+
+    width: 350px;
+    min-width: 350px;
+    overflow: auto;
 }
 
 .exception-monitor .trace-frame::-webkit-scrollbar {
@@ -73,10 +79,11 @@ body {
 }
 
 .exception-monitor .code-frame {
-    width: 100%;
     background-color: #1E2128;
     font-family: Inconsolata, Monaco, Consolas, 'Courier New', Courier;
-    overflow: scroll;
-    padding: 10px;
     font-size: 11px;
+
+    padding: 15px;
+    overflow: auto;
+    width: calc(100% - 300px);
 }

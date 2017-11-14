@@ -17,6 +17,14 @@ class ExceptionMonitor
         if (isset($options['fileLanguage'])) {
             self::$fileLanguage = $options['fileLanguage'];
         }
+
+        if (!\file_exists(self::$fileStyleSyntax)) {
+            die('Error: fileStyleSyntax not exists. <br>' . self::$fileStyleSyntax);
+        }
+
+        if (!\file_exists(self::$fileLanguage)) {
+            die('Error: fileLanguage not exists. <br>' . self::$fileLanguage);
+        }
         self::setHandlers();
     }
 
