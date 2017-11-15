@@ -55,7 +55,7 @@ class ExceptionMonitor
         $exeptionMonitorArgs['errorType'] = $errorType;
         $exeptionMonitorArgs['traceEntries'] = $traceEntries;
         self::show($exeptionMonitorArgs);
-
+        
         // Restor saved error level
         error_reporting($savedLavel);
     }

@@ -35,7 +35,14 @@ class TraceEntry
     {
         $rootPath = $_SERVER['DOCUMENT_ROOT'];
         $len = strlen($rootPath);
-        return substr($this->filePath, $len);
+
+        for($i=0; $i<$len; $i++) {
+            if (!isset($this->filePath[$i]) || $this->filePath[$i] != $rootPath[$i]) {
+                break;
+            }
+        }
+
+        return substr($this->filePath, $i);
     }
 
     public function getIndex()
@@ -63,7 +70,19 @@ class TraceEntry
         if ($this->args && $this->function) {
             $count = 0;
             foreach($this->args as $arg) {
-                $argsStr .= $arg;
+                if (is_object($arg)) {
+                    $argsStr .= get_class($arg);
+                } elseif ($arg === null) {
+                    $argsStr .= 'null';
+                } elseif ($arg === '') {
+                    $argsStr .= 'EMPTY_STRING';
+                } elseif ($arg === false) {
+                    $argsStr .= 'FALSE';
+                } elseif ($arg === true) {
+                    $argsStr .= 'TRUE';
+                } else {
+                    $argsStr .= $arg;
+                }
                 if (++$count < count($this->args)) {
                     $argsStr .= ', ';
                 }
