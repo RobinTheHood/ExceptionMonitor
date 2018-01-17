@@ -1,5 +1,5 @@
 <?php
-namespace ExceptionMonitor;
+namespace RobinTheHood\ExceptionMonitor;
 
 class ExceptionMonitor
 {
@@ -30,9 +30,9 @@ class ExceptionMonitor
 
     private static function setHandlers()
     {
-        set_exception_handler('ExceptionMonitor\ExceptionMonitor::exceptionHandlerBrowser');
-        set_error_handler('ExceptionMonitor\ExceptionMonitor::errorToExceptionHandler');
-        register_shutdown_function('ExceptionMonitor\ExceptionMonitor::syntaxErrorToExceptionHandler');
+        set_exception_handler('RobinTheHood\ExceptionMonitor\ExceptionMonitor::exceptionHandlerBrowser');
+        set_error_handler('RobinTheHood\ExceptionMonitor\ExceptionMonitor::errorToExceptionHandler');
+        register_shutdown_function('RobinTheHood\ExceptionMonitor\ExceptionMonitor::syntaxErrorToExceptionHandler');
     }
 
     public static function exceptionHandlerBrowser($exception)
@@ -55,7 +55,7 @@ class ExceptionMonitor
         $exeptionMonitorArgs['errorType'] = $errorType;
         $exeptionMonitorArgs['traceEntries'] = $traceEntries;
         self::show($exeptionMonitorArgs);
-        
+
         // Restor saved error level
         error_reporting($savedLavel);
     }

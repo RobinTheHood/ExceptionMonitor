@@ -1,5 +1,5 @@
 <?php
-namespace ExceptionMonitor;
+namespace RobinTheHood\ExceptionMonitor;
 
 class TraceEntryFactory
 {

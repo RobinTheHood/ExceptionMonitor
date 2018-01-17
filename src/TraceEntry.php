@@ -1,7 +1,7 @@
 <?php
-namespace ExceptionMonitor;
+namespace RobinTheHood\ExceptionMonitor;
 
-use SyntaxHighlighter\SyntaxHighlighter;
+use RobinTheHood\SyntaxHighlighter\SyntaxHighlighter;
 
 class TraceEntry
 {

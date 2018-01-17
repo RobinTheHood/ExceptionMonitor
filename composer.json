@@ -20,7 +20,7 @@
     },
     "autoload": {
         "psr-4": {
-            "ExceptionMonitor\\": "src/"
+            "RobinTheHood\\ExceptionMonitor\\": "src/"
         }
 
     }

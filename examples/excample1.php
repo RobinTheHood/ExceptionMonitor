@@ -4,7 +4,7 @@
 error_reporting(E_ALL);
 
 require '../vendor/autoload.php';
-use ExceptionMonitor\ExceptionMonitor;
+use RobinTheHood\ExceptionMonitor\ExceptionMonitor;
 
 ExceptionMonitor::register();
 include('FileWithError.php');
