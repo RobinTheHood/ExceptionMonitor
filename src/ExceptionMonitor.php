@@ -9,6 +9,9 @@ class ExceptionMonitor
     private static $fileStyleSyntax = __DIR__ . '/../../syntax-highlighter/styles/default.css';
     private static $fileLanguage = __DIR__ . '/../../syntax-highlighter/languages/php_lang.php';
 
+    private static $mode = 'browser';
+    private static $mailAddress = '';
+
     public static function register($options = [])
     {
         if (isset($options['fileStyleSyntax'])) {
@@ -25,14 +28,76 @@ class ExceptionMonitor
         if (!\file_exists(self::$fileLanguage)) {
             die('Error: fileLanguage not exists. <br>' . self::$fileLanguage);
         }
-        self::setHandlers();
+
+        if (self::isEnabled($options)) {
+            self::enablePhpErrors();
+            self::setHandlers('browser');
+        } else {
+            self::disablePhpErrors();
+            if (isset($options['mail'])) {
+                self::$mailAddress = $options['mail'];
+                self::setHandlers('mail');
+            }
+        }
     }
 
-    private static function setHandlers()
+    public static function enablePhpErrors()
     {
-        set_exception_handler('RobinTheHood\ExceptionMonitor\ExceptionMonitor::exceptionHandlerBrowser');
+        ini_set('display_errors', 1);
+        ini_set('display_startup_errors', 1);
+        error_reporting(E_ALL);
+    }
+
+    public static function disablePhpErrors()
+    {
+        ini_set('display_errors', 0);
+        ini_set('display_startup_errors', 0);
+        error_reporting(0);
+    }
+
+    private static function isEnabled($options)
+    {
+        if (isset($options['ip']) && $options['ip'] != $_SERVER['SERVER_ADDR']) {
+            return false;
+        }
+
+        if (isset($options['domain'])) {
+            $parts = explode('.', $_SERVER['SERVER_NAME']);
+            $parts = array_reverse($parts);
+            $domain = $parts[1] . '.' . $parts[0];
+
+            if ($options['domain'] != $domain) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private static function setHandlers($newMode = 'browser')
+    {
+        self::$mode = $newMode;
+
+        set_exception_handler('RobinTheHood\ExceptionMonitor\ExceptionMonitor::exceptionHandler');
         set_error_handler('RobinTheHood\ExceptionMonitor\ExceptionMonitor::errorToExceptionHandler');
         register_shutdown_function('RobinTheHood\ExceptionMonitor\ExceptionMonitor::syntaxErrorToExceptionHandler');
+    }
+
+    public static function exceptionHandler($exception)
+    {
+        if (self::$mode == 'browser') {
+            self::exceptionHandlerBrowser($exception);
+        } elseif(self::$mode == 'mail') {
+            self::exceptionHandlerMail($exception);
+        }
+    }
+
+    public static function exceptionHandlerMail($exception)
+    {
+        $subject = 'ErrorReport: ' . $_SERVER['SERVER_NAME'];
+        $content = $exception->getMessage();
+
+        self::sendMail(self::$mailAddress, $subject, $content);
     }
 
     public static function exceptionHandlerBrowser($exception)
@@ -144,7 +209,24 @@ class ExceptionMonitor
             case E_CORE_WARNING:
             case E_COMPILE_WARNING:
             case E_PARSE:
-                self::exceptionHandlerBrowser($exception);
+                self::exceptionHandler($exception);
         }
+    }
+
+    private static function sendMail($toAddress, $subject, $content)
+    {
+        $header[] = 'MIME-Version: 1.0';
+        $header[] = 'Content-type: text/plain; charset=UTF-8';
+        $header[] = 'Content-Transfer-Encoding: quoted-printable';
+        //$header[] = 'From: '           . $encodedMeta['from'];
+        //$header[] = 'Reply-To: '       . $encodedMeta['replyTo'];
+        $header[] = 'X-Mailer: PHP/'   . phpversion();
+        $header = implode("\r\n", $header);
+
+        // Set bounce - option
+        $options =  '-f ' . $toAddress;
+
+        // Send mail
+        mail($toAddress, $subject, quoted_printable_encode($content), $header, $options);
     }
 }
