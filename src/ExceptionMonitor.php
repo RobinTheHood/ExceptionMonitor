@@ -95,9 +95,31 @@ class ExceptionMonitor
     public static function exceptionHandlerMail($exception)
     {
         $subject = 'ErrorReport: ' . $_SERVER['SERVER_NAME'];
-        $content = $exception->getMessage();
+        //$content = $exception->getMessage();
+        $content = self::exceptionToString($exception);
 
         self::sendMail(self::$mailAddress, $subject, $content);
+    }
+
+    public static function exceptionToString($exception)
+    {
+        $str = '';
+
+        $str .= 'Message: ' . $exception->getMessage() . "\n";
+        $str .= 'File: ' . $exception->getFile() . "\n";
+        $str .= 'Line: ' . $exception->getLine() . "\n";
+
+        $str .= "\n" . '---------- TRACE ----------' . "\n\n";
+
+        foreach ($exception->getTrace() as $entry) {
+            $str .= 'File: ' . $entry['file'] . "\n";
+            $str .= 'Line: ' . $entry['line'] . "\n";
+            $str .= 'Func: ' . $entry['function'] . "\n";
+            $str .= 'Class: ' . $entry['class'] . "\n";
+            $str .= '---------------------------' . "\n\n";
+        }
+
+        return $str;
     }
 
     public static function exceptionHandlerBrowser($exception)
