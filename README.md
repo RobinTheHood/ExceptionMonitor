@@ -25,6 +25,15 @@ require '../vendor/autoload.php';
 ExceptionMonitor\ExceptionMonitor::register();
 ```
 
+### Settings
+| Index  | Description                                           | Example value    |
+|--------|-------------------------------------------------------|------------------|
+| ip     | Shows the ExceptionMonitor only if the ip matches     | 127.0.0.1        |
+| domain | Shows the ExceptionMonitor only if the domain matches | www.example.com  |
+| mail   | Send Mail to this address if ip/domain not match      | info@example.com |
+
+If an ip and a domain are specified, both must match in order to display the ExceptionMonitor.
+
 # License
 Copyright (c) 2017 Robin Wieschendorf
 
