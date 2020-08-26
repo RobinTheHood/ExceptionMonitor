@@ -219,6 +219,10 @@ class ExceptionMonitor
     {
         $lastError = error_get_last();
 
+        if (!$lastError) {
+            return;
+        }
+        
         $exception = new \ErrorException($lastError['message'], 0, $lastError['type'], $lastError['file'], $lastError['line']);
 
         switch ($lastError['type'])
