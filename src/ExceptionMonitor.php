@@ -64,7 +64,14 @@ class ExceptionMonitor
         if (isset($options['domain'])) {
             $parts = explode('.', $_SERVER['SERVER_NAME']);
             $parts = array_reverse($parts);
-            $domain = $parts[1] . '.' . $parts[0];
+            
+            if (isset($parts[1]) && $parts[0]) {
+                $domain = $parts[1] . '.' . $parts[0];
+            } elseif (isset($parts[0])) {
+                $domain = $parts[0];
+            } else {
+                return false;
+            }
 
             if ($options['domain'] != $domain) {
                 return false;
