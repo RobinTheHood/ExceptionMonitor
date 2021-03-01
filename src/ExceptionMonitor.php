@@ -57,7 +57,9 @@ class ExceptionMonitor
 
     private static function isEnabled($options)
     {
-        if (isset($options['ip']) && $options['ip'] != $_SERVER['SERVER_ADDR']) {
+        $serverIp = isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : '';
+
+        if (isset($options['ip']) && $options['ip'] != $serverIp) {
             return false;
         }
 
