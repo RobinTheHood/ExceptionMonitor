@@ -1,4 +1,5 @@
 <?php
+
 namespace RobinTheHood\ExceptionMonitor;
 
 use RobinTheHood\SyntaxHighlighter\SyntaxHighlighter;
@@ -36,7 +37,7 @@ class TraceEntry
         $rootPath = $_SERVER['DOCUMENT_ROOT'];
         $len = strlen($rootPath);
 
-        for($i=0; $i<$len; $i++) {
+        for ($i = 0; $i < $len; $i++) {
             if (!isset($this->filePath[$i]) || $this->filePath[$i] != $rootPath[$i]) {
                 break;
             }
@@ -69,7 +70,7 @@ class TraceEntry
     {
         if ($this->args && $this->function) {
             $count = 0;
-            foreach($this->args as $arg) {
+            foreach ($this->args as $arg) {
                 if (is_object($arg)) {
                     $argsStr .= get_class($arg);
                 } elseif ($arg === null) {

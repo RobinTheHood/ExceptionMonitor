@@ -26,7 +26,7 @@
         </div>
         <div class="content-frame">
             <div class="trace-frame">
-                <?php foreach($exeptionMonitorArgs['traceEntries'] as $traceEntry) { ?>
+                <?php foreach ($exeptionMonitorArgs['traceEntries'] as $traceEntry) { ?>
                     <div class="trace-entry trace-entry-selected" data-code="<?php echo $traceEntry->getIndex() ?>">
                         <div class="error-exception-class">
                             <span class="error-exceptiron-number"><?php echo $traceEntry->getIndex(); ?></span>
@@ -39,7 +39,7 @@
                 <?php } ?>
             </div>
             <div class="code-frame" id="code-frame">
-                <?php foreach($exeptionMonitorArgs['traceEntries'] as $traceEntry) { ?>
+                <?php foreach ($exeptionMonitorArgs['traceEntries'] as $traceEntry) { ?>
                     <div id="<?php echo 'code-' . $traceEntry->getIndex(); ?>" class="source-code">
                         <?php echo $traceEntry->getCode(); ?>
                     </div>

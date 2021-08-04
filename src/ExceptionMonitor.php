@@ -1,4 +1,5 @@
 <?php
+
 namespace RobinTheHood\ExceptionMonitor;
 
 class ExceptionMonitor
@@ -74,7 +75,7 @@ class ExceptionMonitor
             } else {
                 return false;
             }
-            
+
             if ($options['domain'] != $domain) {
                 return false;
             }
@@ -96,7 +97,7 @@ class ExceptionMonitor
     {
         if (self::$mode == 'browser') {
             self::exceptionHandlerBrowser($exception);
-        } elseif(self::$mode == 'mail') {
+        } elseif (self::$mode == 'mail') {
             self::exceptionHandlerMail($exception);
         }
     }
@@ -146,7 +147,7 @@ class ExceptionMonitor
         $exeptionMonitorArgs['fileScript'] = self::$fileScript;
         $exeptionMonitorArgs['fullClassName'] = $classInformations['fullClassName'];
         $exeptionMonitorArgs['class'] = $classInformations['class'];
-        $exeptionMonitorArgs['namespace'] = $classInformations['namespace'];;
+        $exeptionMonitorArgs['namespace'] = $classInformations['namespace'];
         $exeptionMonitorArgs['exception'] = $exception;
         $exeptionMonitorArgs['errorType'] = $errorType;
         $exeptionMonitorArgs['traceEntries'] = $traceEntries;
@@ -158,7 +159,8 @@ class ExceptionMonitor
 
     private static function filterTracEntriesArray($traceEntries)
     {
-        if ($traceEntries[0]['class'] == 'ExceptionMonitor\ExceptionMonitor'
+        if (
+            $traceEntries[0]['class'] == 'ExceptionMonitor\ExceptionMonitor'
             && $traceEntries[0]['function'] == 'errorToExceptionHandler'
         ) {
             \array_shift($traceEntries);
@@ -170,7 +172,7 @@ class ExceptionMonitor
     private static function createErrorType($exception)
     {
         if ($exception instanceof \ErrorException) {
-            switch($exception->getSeverity()) {
+            switch ($exception->getSeverity()) {
                 case E_ERROR:
                     return 'Error:';
                 case E_WARNING:
@@ -192,7 +194,7 @@ class ExceptionMonitor
 
         $index = 0;
         $traceEntries[] = TraceEntryFactory::createFromException($index++, $exception, $fileLanguage);
-        foreach($traceArrayEntries as $traceArrayEntry) {
+        foreach ($traceArrayEntries as $traceArrayEntry) {
             $traceEntries[] = TraceEntryFactory::createFromTraceArrayEntry($index++, $traceArrayEntry, $fileLanguage);
         }
         $traceEntries[0]->setFunction('');
@@ -204,7 +206,7 @@ class ExceptionMonitor
     {
         $result['fullClassName'] = get_class($exception);
         $classNameElements = explode('\\', $result['fullClassName']);
-        for($i=0; $i<count($classNameElements) - 1; $i++) {
+        for ($i = 0; $i < count($classNameElements) - 1; $i++) {
             $result['namespace'] .= $classNameElements[$i] . ' \\ ';
         }
         $result['class'] = $classNameElements[count($classNameElements) - 1];
@@ -231,11 +233,10 @@ class ExceptionMonitor
         if (!$lastError) {
             return;
         }
-        
+
         $exception = new \ErrorException($lastError['message'], 0, $lastError['type'], $lastError['file'], $lastError['line']);
 
-        switch ($lastError['type'])
-        {
+        switch ($lastError['type']) {
             case E_ERROR:
             case E_CORE_ERROR:
             case E_COMPILE_ERROR:
