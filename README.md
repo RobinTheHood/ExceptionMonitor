@@ -34,6 +34,14 @@ ExceptionMonitor\ExceptionMonitor::register();
 
 If an ip and a domain are specified, both must match in order to display the ExceptionMonitor.
 
+## Test
+
+```bash
+php -S localhost:8080 -t ./examples
+```
+
+Open in your Browser: `http://localhost:8080/example1.php`
+
 # License
 Copyright (c) 2017 Robin Wieschendorf
 
