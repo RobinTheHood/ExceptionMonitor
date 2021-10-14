@@ -8,4 +8,5 @@ require '../vendor/autoload.php';
 use RobinTheHood\ExceptionMonitor\ExceptionMonitor;
 
 ExceptionMonitor::register();
+
 include('FileWithError.php');
