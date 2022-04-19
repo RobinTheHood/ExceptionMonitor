@@ -13,7 +13,7 @@
         }
     ],
     "require": {
-        "php": "^5.6 || ^7.0",
+        "php": "^5.6 || ^7.0 || ^8.0",
         "robinthehood/syntax-highlighter": "^0.1.0",
         "robinthehood/tokenizer": "^0.1.0",
         "robinthehood/terminal": "^0.1.1"
