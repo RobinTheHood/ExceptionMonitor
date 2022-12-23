@@ -70,6 +70,7 @@ class TraceEntry
     {
         if ($this->args && $this->function) {
             $count = 0;
+            $argsStr = '';
             foreach ($this->args as $arg) {
                 if (is_object($arg)) {
                     $argsStr .= get_class($arg);
