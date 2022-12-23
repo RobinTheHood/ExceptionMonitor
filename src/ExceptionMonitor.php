@@ -39,27 +39,16 @@ class ExceptionMonitor
 
     private static function isEnabled($options)
     {
-        $serverIp = isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : '';
+        $server = new Server();
+        $serverIp = $server->getIpAddress();
+        $serverName = $server->getServerName();
 
         if (isset($options['ip']) && $options['ip'] != $serverIp) {
             return false;
         }
 
-        if (isset($options['domain'])) {
-            $parts = explode('.', $_SERVER['SERVER_NAME']);
-            $parts = array_reverse($parts);
-
-            if (isset($parts[1]) && isset($parts[0])) {
-                $domain = $parts[1] . '.' . $parts[0];
-            } elseif (isset($parts[0])) {
-                $domain = $parts[0];
-            } else {
-                return false;
-            }
-
-            if ($options['domain'] != $domain) {
-                return false;
-            }
+        if (isset($options['domain']) && $options['domain'] != $serverName) {
+            return false;
         }
 
         return true;
