@@ -6,18 +6,37 @@ class FailGuard
 {
     private $client;
 
-    public function __construct()
+    /**
+     * @var string $rootPath
+     */
+    private $rootPath = '';
+
+    public function __construct($options = [])
     {
+        $root = $_SERVER["DOCUMENT_ROOT"];
+        $this->rootPath = $root . '/FailGuard';
+
+        if (isset($options['rootPath'])) {
+            $this->setRootPath($options['rootPath']);
+        }
+
         $this->loadClient();
+    }
+
+    /**
+     * @param string $path
+     */
+    public function setRootPath($rootPath)
+    {
+        $this->rootPath = $rootPath;
     }
 
     public function loadClient()
     {
         $ip = $_SERVER['REMOTE_ADDR'] ?? '';
-        $clientId = new clientId($ip);
+        $clientId = new ClientId($ip);
 
-        $root = $_SERVER["DOCUMENT_ROOT"];
-        $path = $root . '/FailGuard/Clients/' . $clientId->getId();
+        $path = $this->rootPath . '/Clients/' . $clientId->getId();
 
         $this->client = new Client($clientId);
         if (file_exists($path)) {
@@ -33,8 +52,7 @@ class FailGuard
     public function saveClient()
     {
         $clientId = $this->client->getClientId();
-        $root = $_SERVER["DOCUMENT_ROOT"];
-        $path = $root . '/FailGuard/Clients/' . $clientId->getId();
+        $path = $this->rootPath . '/Clients/' . $clientId->getId();
 
         $content = serialize($this->client);
         file_put_contents($path, $content);
