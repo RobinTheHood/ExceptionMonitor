@@ -38,7 +38,8 @@ class BrowserHandler
         $directory = dirname(__FILE__);
         while ($directory != '/') {
             $composerFile = $directory . '/composer.json';
-            if (file_exists($composerFile)) {
+            $vendorDir = $directory . '/vendor';
+            if (file_exists($composerFile) && file_exists($vendorDir)) {
                 return $directory;
             }
             $directory = dirname($directory);
