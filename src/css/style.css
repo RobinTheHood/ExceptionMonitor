@@ -37,7 +37,7 @@ body {
 
 .exception-monitor .content-frame {
     display: flex;
-    height: calc(100% - 90px);
+    height: calc(100vh - 90px);
 }
 
 .exception-monitor .trace-frame {
