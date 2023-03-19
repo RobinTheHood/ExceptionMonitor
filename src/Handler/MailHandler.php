@@ -1,42 +1,46 @@
 <?php
 
-namespace RobinTheHood\ExceptionMonitor\Handlers;
+declare(strict_types=1);
 
-class MailHandler
+namespace RobinTheHood\ExceptionMonitor\Handler;
+
+use Throwable;
+
+class MailHandler implements HandlerInterface
 {
-    private static $mailAddress = '';
-    private static $failGuard = null;
+    private $mailAddress = '';
+    private $failGuard = null;
 
-    public static function init($options)
+    public function init($options)
     {
         if (isset($options['mail'])) {
-            self::$mailAddress = $options['mail'];
+            $this->mailAddress = $options['mail'];
         }
 
         if (isset($options['failGuard'])) {
-            self::$failGuard = $options['failGuard'];
+            $this->failGuard = $options['failGuard'];
         }
     }
 
-    public static function exceptionHandlerMail($exception)
+    public function handle(Throwable $exception): void
     {
-        if (!self::$mailAddress) {
+        if (!$this->mailAddress) {
             return;
         }
 
-        $content = self::exceptionToString($exception);
+        $content = $this->exceptionToString($exception);
         $hash = md5($content);
         $subject = 'ErrorReport: ' . $_SERVER['SERVER_NAME'] . ' - ' . $hash;
 
-        self::sendMail(self::$mailAddress, $subject, $content);
+        $this->sendMail($this->mailAddress, $subject, $content);
 
-        if (self::$failGuard) {
-            self::$failGuard->addFail();
-            self::$failGuard->saveClient();
+        if ($this->failGuard) {
+            $this->failGuard->addFail();
+            $this->failGuard->saveClient();
         }
     }
 
-    public static function exceptionToString($exception)
+    public function exceptionToString($exception)
     {
         $str = '';
 
@@ -60,7 +64,7 @@ class MailHandler
         return $str;
     }
 
-    private static function sendMail($toAddress, $subject, $content)
+    private function sendMail($toAddress, $subject, $content)
     {
         $header[] = 'MIME-Version: 1.0';
         $header[] = 'Content-type: text/plain; charset=UTF-8';

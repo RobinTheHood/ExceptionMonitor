@@ -2,8 +2,8 @@
 
 namespace RobinTheHood\ExceptionMonitor;
 
-use RobinTheHood\ExceptionMonitor\Handlers\BrowserHandler;
-use RobinTheHood\ExceptionMonitor\Handlers\MailHandler;
+use RobinTheHood\ExceptionMonitor\Handler\BrowserHandler;
+use RobinTheHood\ExceptionMonitor\Handler\MailHandler;
 
 class ExceptionMonitor
 {
@@ -58,23 +58,25 @@ class ExceptionMonitor
     {
         self::$mode = $newMode;
 
-        set_exception_handler('RobinTheHood\ExceptionMonitor\ExceptionMonitor::exceptionHandler');
-        set_error_handler('RobinTheHood\ExceptionMonitor\ExceptionMonitor::errorToExceptionHandler');
-        register_shutdown_function('RobinTheHood\ExceptionMonitor\ExceptionMonitor::syntaxErrorToExceptionHandler');
+        set_exception_handler([__CLASS__, 'runExceptionHandler']);
+        set_error_handler([__CLASS__, 'runErrorHandler']);
+        register_shutdown_function([__CLASS__, 'runShutdownFunction']);
     }
 
-    public static function exceptionHandler($exception)
+    public static function runExceptionHandler($exception)
     {
-        if (self::$mode == 'browser') {
-            BrowserHandler::init(self::$options);
-            BrowserHandler::exceptionHandlerBrowser($exception);
-        } elseif (self::$mode == 'mail') {
-            MailHandler::init(self::$options);
-            MailHandler::exceptionHandlerMail($exception);
+        if (self::$mode === 'browser') {
+            $browserHandler = new BrowserHandler();
+            $browserHandler->init(self::$options);
+            $browserHandler->handle($exception);
+        } elseif (self::$mode === 'mail') {
+            $mailHandler = new MailHandler();
+            $mailHandler->init(self::$options);
+            $mailHandler->handle($exception);
         }
     }
 
-    public static function errorToExceptionHandler($severity, $message, $file, $line)
+    public static function runErrorHandler($severity, $message, $file, $line)
     {
         if (!(error_reporting() & $severity)) {
             return;
@@ -82,7 +84,7 @@ class ExceptionMonitor
         throw new \ErrorException($message, 0, $severity, $file, $line);
     }
 
-    public static function syntaxErrorToExceptionHandler()
+    public static function runShutdownFunction()
     {
         $lastError = error_get_last();
 
@@ -107,7 +109,7 @@ class ExceptionMonitor
             case E_CORE_WARNING:
             case E_COMPILE_WARNING:
             case E_PARSE:
-                self::exceptionHandler($exception);
+                self::runExceptionHandler($exception);
         }
     }
 }
