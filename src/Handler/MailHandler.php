@@ -11,6 +11,11 @@ class MailHandler implements HandlerInterface
     private $mailAddress = '';
     private $failGuard = null;
 
+    public function __construct(array $options = [])
+    {
+        $this->init($options);
+    }
+
     public function init($options)
     {
         if (isset($options['mail'])) {
@@ -51,10 +56,10 @@ class MailHandler implements HandlerInterface
         $str .= "\n" . '---------- TRACE ----------' . "\n\n";
 
         foreach ($exception->getTrace() as $entry) {
-            $str .= 'File: ' . $entry['file'] . "\n";
-            $str .= 'Line: ' . $entry['line'] . "\n";
-            $str .= 'Func: ' . $entry['function'] . "\n";
-            $str .= 'Class: ' . $entry['class'] . "\n";
+            $str .= 'File: ' . ($entry['file'] ?? '') . "\n";
+            $str .= 'Line: ' . ($entry['line'] ?? '') . "\n";
+            $str .= 'Func: ' . ($entry['function'] ?? '') . "\n";
+            $str .= 'Class: ' . ($entry['class'] ?? '') . "\n";
             $str .= '---------------------------' . "\n\n";
         }
 
