@@ -9,7 +9,7 @@ class TraceEntryFactory
         return new TraceEntry(
             $index,
             $traceArrayEntry['file'] ?? '',
-            $traceArrayEntry['line'] ?? '',
+            $traceArrayEntry['line'] ?? 0,
             $traceArrayEntry['function'] ?? '',
             $traceArrayEntry['class'] ?? '',
             $traceArrayEntry['args'] ?? [],
