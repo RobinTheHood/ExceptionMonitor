@@ -8,11 +8,11 @@ class TraceEntryFactory
     {
         return new TraceEntry(
             $index,
-            $traceArrayEntry['file'],
-            $traceArrayEntry['line'],
-            $traceArrayEntry['function'],
-            $traceArrayEntry['class'],
-            $traceArrayEntry['args'],
+            $traceArrayEntry['file'] ?? '',
+            $traceArrayEntry['line'] ?? '',
+            $traceArrayEntry['function'] ?? '',
+            $traceArrayEntry['class'] ?? '',
+            $traceArrayEntry['args'] ?? [],
             $fileLanguage
         );
     }

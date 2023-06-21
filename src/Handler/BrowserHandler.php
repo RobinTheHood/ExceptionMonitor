@@ -70,9 +70,9 @@ class BrowserHandler implements HandlerInterface
         $exeptionMonitorArgs['fileStyle'] = $this->fileStyle;
         $exeptionMonitorArgs['fileStyleSyntax'] = $this->fileStyleSyntax;
         $exeptionMonitorArgs['fileScript'] = $this->fileScript;
-        $exeptionMonitorArgs['fullClassName'] = $classInformations['fullClassName'];
-        $exeptionMonitorArgs['class'] = $classInformations['class'];
-        $exeptionMonitorArgs['namespace'] = $classInformations['namespace'];
+        $exeptionMonitorArgs['fullClassName'] = $classInformations['fullClassName'] ?? '';
+        $exeptionMonitorArgs['class'] = $classInformations['class'] ?? '';
+        $exeptionMonitorArgs['namespace'] = $classInformations['namespace'] ?? '';
         $exeptionMonitorArgs['exception'] = $exception;
         $exeptionMonitorArgs['errorType'] = $errorType;
         $exeptionMonitorArgs['traceEntries'] = $traceEntries;
@@ -132,8 +132,8 @@ class BrowserHandler implements HandlerInterface
     private function filterTracEntriesArray($traceEntries)
     {
         if (
-            $traceEntries[0]['class'] == 'ExceptionMonitor\ExceptionMonitor'
-            && $traceEntries[0]['function'] == 'errorToExceptionHandler'
+            ($traceEntries[0]['class'] ?? '') == 'ExceptionMonitor\ExceptionMonitor'
+            && ($traceEntries[0]['function'] ?? '') == 'errorToExceptionHandler'
         ) {
             array_shift($traceEntries);
             array_shift($traceEntries);

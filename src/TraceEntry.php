@@ -9,6 +9,9 @@ class TraceEntry
     private $index;
     private $filePath;
     private $line;
+    private $function;
+    private $class;
+    private $args;
     private $fileSyntax;
 
     public function __construct($index, $filePath, $line, $function, $class, $args, $fileSyntax)
@@ -71,6 +74,7 @@ class TraceEntry
         if ($this->args && $this->function) {
             $count = 0;
             $argsStr = '';
+
             foreach ($this->args as $arg) {
                 if (is_object($arg)) {
                     $argsStr .= get_class($arg);
@@ -82,13 +86,19 @@ class TraceEntry
                     $argsStr .= 'FALSE';
                 } elseif ($arg === true) {
                     $argsStr .= 'TRUE';
-                } else {
+                } elseif (is_array($arg)) {
+                    $argsStr .= "ARRAY";
+                } elseif (is_string($arg) || is_numeric($arg)) {
                     $argsStr .= $arg;
+                } else {
+                    $argsStr .= 'UNKOWN_VALUE';
                 }
+
                 if (++$count < count($this->args)) {
                     $argsStr .= ', ';
                 }
             }
+
             return $this->function . '(' . $argsStr . ')';
         } else {
             return $this->function;
