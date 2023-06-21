@@ -6,14 +6,36 @@ use RobinTheHood\SyntaxHighlighter\SyntaxHighlighter;
 
 class TraceEntry
 {
+    /** @var int */
     private $index;
+
+    /** @var string */
     private $filePath;
+
+    /** @var int */
     private $line;
+
+    /** @var string */
     private $function;
+
+    /** @var string */
     private $class;
+
+    /** @var array */
     private $args;
+
+    /** @var string */
     private $fileSyntax;
 
+    /**
+     * @param int $index
+     * @param string $filePath
+     * @param int $line
+     * @param string $function
+     * @param string $class
+     * @param array $args
+     * @param string $fileSyntax
+     */
     public function __construct($index, $filePath, $line, $function, $class, $args, $fileSyntax)
     {
         $this->index = $index;
@@ -25,16 +47,25 @@ class TraceEntry
         $this->fileSyntax = $fileSyntax;
     }
 
+    /**
+     * @return string
+     */
     public function getClass()
     {
         return $this->class;
     }
 
+    /**
+     * @return string
+     */
     public function getFilePath()
     {
         return $this->filePath;
     }
 
+    /**
+     * @return string
+     */
     public function getRelativeFilePath()
     {
         $rootPath = $_SERVER['DOCUMENT_ROOT'];
@@ -49,26 +80,41 @@ class TraceEntry
         return substr($this->filePath, $i);
     }
 
+    /**
+     * @return int
+     */
     public function getIndex()
     {
         return $this->index;
     }
 
+    /**
+     * @return int
+     */
     public function getLine()
     {
         return $this->line;
     }
 
+    /**
+     * @return string
+     */
     public function getFunction()
     {
         return $this->function;
     }
 
+    /**
+     * @param string $function
+     */
     public function setFunction($function)
     {
         $this->function = $function;
     }
 
+    /**
+     * @return string
+     */
     public function getFunctionWithArgs()
     {
         if ($this->args && $this->function) {
@@ -105,11 +151,17 @@ class TraceEntry
         }
     }
 
+    /**
+     * @return array
+     */
     public function getArgs()
     {
         return $this->args;
     }
 
+    /**
+     * @return string|void
+     */
     public function getCode()
     {
         if (\file_exists($this->filePath)) {

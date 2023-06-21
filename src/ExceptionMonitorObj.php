@@ -3,9 +3,9 @@
 namespace RobinTheHood\ExceptionMonitor;
 
 use ErrorException;
+use Throwable;
 use RobinTheHood\ExceptionMonitor\Handler\HandlerCollection;
 use RobinTheHood\ExceptionMonitor\Handler\HandlerInterface;
-use Throwable;
 
 class ExceptionMonitorObj
 {
@@ -45,6 +45,12 @@ class ExceptionMonitorObj
         }
     }
 
+    /**
+     * @param int $severity
+     * @param string Message
+     * @param string $file
+     * @param string $line
+     */
     private function runErrorHandler($severity, $message, $file, $line): bool
     {
         if (!(error_reporting() & $severity)) {
@@ -73,7 +79,7 @@ class ExceptionMonitorObj
             return null;
         }
 
-        $exception = new \ErrorException(
+        $exception = new ErrorException(
             $lastError['message'],
             0,
             $lastError['type'],

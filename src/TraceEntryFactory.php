@@ -2,8 +2,17 @@
 
 namespace RobinTheHood\ExceptionMonitor;
 
+use Exception;
+
 class TraceEntryFactory
 {
+    /**
+     * @param int $index
+     * @param array $traceArrayEntry
+     * @param string $fileLanguage Path
+     *
+     * @return TraceEntry
+     */
     public static function createFromTraceArrayEntry($index, $traceArrayEntry, $fileLanguage)
     {
         return new TraceEntry(
@@ -17,6 +26,12 @@ class TraceEntryFactory
         );
     }
 
+    /**
+     * @param Exception $exception
+     * @param string $fileLanguage Path
+     *
+     * @return TraceEntry
+     */
     public static function createFromException($index, $exception, $fileLanguage)
     {
         return new TraceEntry(

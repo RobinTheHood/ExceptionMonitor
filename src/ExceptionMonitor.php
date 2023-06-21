@@ -7,9 +7,17 @@ use RobinTheHood\ExceptionMonitor\Handler\MailHandler;
 
 class ExceptionMonitor
 {
+    /** @var string */
     private static $mode = 'browser';
+
+    /** @var array */
     private static $options = [];
 
+    /**
+     * @param array $options
+     *
+     * @return void
+     */
     public static function register($options = [])
     {
         self::$options = $options;
@@ -23,6 +31,9 @@ class ExceptionMonitor
         }
     }
 
+    /**
+     * @return void
+     */
     public static function enablePhpErrors()
     {
         ini_set('display_errors', 1);
@@ -30,6 +41,9 @@ class ExceptionMonitor
         error_reporting(E_ALL);
     }
 
+    /**
+     * @return void
+     */
     public static function disablePhpErrors()
     {
         ini_set('display_errors', 0);
@@ -37,6 +51,11 @@ class ExceptionMonitor
         error_reporting(E_ALL & ~E_NOTICE);
     }
 
+    /**
+     * @param array $options
+     *
+     * @return bool
+     */
     private static function isEnabled($options)
     {
         $server = new Server();
@@ -54,6 +73,11 @@ class ExceptionMonitor
         return true;
     }
 
+    /**
+     * @param string $newMode
+     *
+     * @return void
+     */
     private static function setHandlers($newMode = 'browser')
     {
         self::$mode = $newMode;
@@ -63,6 +87,11 @@ class ExceptionMonitor
         register_shutdown_function([__CLASS__, 'runShutdownFunction']);
     }
 
+    /**
+     * @param Exception exception
+     *
+     * @return void
+     */
     public static function runExceptionHandler($exception)
     {
         if (self::$mode === 'browser') {
@@ -76,6 +105,14 @@ class ExceptionMonitor
         }
     }
 
+    /**
+     * @param int $severity
+     * @param string $message
+     * @param string $file
+     * @param int $line
+     *
+     * @return void
+     */
     public static function runErrorHandler($severity, $message, $file, $line)
     {
         if (!(error_reporting() & $severity)) {
@@ -84,6 +121,9 @@ class ExceptionMonitor
         throw new \ErrorException($message, 0, $severity, $file, $line);
     }
 
+    /**
+     * @return void
+     */
     public static function runShutdownFunction()
     {
         $lastError = error_get_last();

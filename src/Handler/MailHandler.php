@@ -8,14 +8,29 @@ use Throwable;
 
 class MailHandler implements HandlerInterface
 {
+    /**
+     * @var string
+     */
     private $mailAddress = '';
+
+    /**
+     * @var FailGuard
+     */
     private $failGuard = null;
 
+    /**
+     * @param array $options
+     */
     public function __construct(array $options = [])
     {
         $this->init($options);
     }
 
+    /**
+     * @param array $options
+     *
+     * @return void
+     */
     public function init($options)
     {
         if (isset($options['mail'])) {
@@ -45,6 +60,11 @@ class MailHandler implements HandlerInterface
         }
     }
 
+    /**
+     * @param Exception $exception
+     *
+     * @return string
+     */
     public function exceptionToString($exception)
     {
         $str = '';
@@ -69,6 +89,13 @@ class MailHandler implements HandlerInterface
         return $str;
     }
 
+    /**
+     * @param string $toAddress
+     * @param string $subject
+     * @param string $content
+     *
+     * @return void
+     */
     private function sendMail($toAddress, $subject, $content)
     {
         $header[] = 'MIME-Version: 1.0';

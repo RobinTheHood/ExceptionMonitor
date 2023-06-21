@@ -4,20 +4,30 @@ declare(strict_types=1);
 
 namespace RobinTheHood\ExceptionMonitor\Handler;
 
+use Exception;
 use ErrorException;
+use Throwable;
 use RobinTheHood\ExceptionMonitor\Handler\HandlerInterface;
 use RobinTheHood\ExceptionMonitor\TraceEntryFactory;
-use Throwable;
 
 class BrowserHandler implements HandlerInterface
 {
+    /** @var string */
     private const PATH_STYLE_SYNTAX = '/vendor/robinthehood/syntax-highlighter/styles/default.css';
+
+    /** @var string */
     private const PATH_LANGUAGE = '/vendor/robinthehood/syntax-highlighter/languages/php_lang.php';
 
+    /** @var string */
     private $fileStyle = __DIR__ . '/../css/style.css';
+
+    /** @var string */
     private $fileScript = __DIR__ . '/../js/script.js';
 
+    /** @var string */
     private $fileStyleSyntax = '';
+
+    /** @var string */
     private $fileLanguage = '';
 
     public function __construct()
@@ -26,6 +36,11 @@ class BrowserHandler implements HandlerInterface
         $this->setFileLanguage($this->findVendorDir() . self::PATH_LANGUAGE);
     }
 
+    /**
+     * @param string $path
+     *
+     * @return void
+     */
     private function setFileStyleSyntax(string $path): void
     {
         if (!\file_exists($path)) {
@@ -35,6 +50,11 @@ class BrowserHandler implements HandlerInterface
         $this->fileStyleSyntax = $path;
     }
 
+    /**
+     * @param string $path
+     *
+     * @return void
+     */
     private function setFileLanguage(string $path): void
     {
         if (!\file_exists($path)) {
@@ -44,6 +64,11 @@ class BrowserHandler implements HandlerInterface
         $this->fileLanguage = $path;
     }
 
+    /**
+     * @param array $options
+     *
+     * @return void
+     */
     public function init($options)
     {
         if (isset($options['fileStyleSyntax'])) {
@@ -57,6 +82,11 @@ class BrowserHandler implements HandlerInterface
         }
     }
 
+    /**
+     * @param Throwable $exception
+     *
+     * @return void
+     */
     public function handle(Throwable $exception): void
     {
         // Save current error level
@@ -82,6 +112,9 @@ class BrowserHandler implements HandlerInterface
         error_reporting($savedLavel);
     }
 
+    /**
+     * @return string|false
+     */
     private function findVendorDir()
     {
         $directory = dirname(__FILE__);
@@ -96,6 +129,11 @@ class BrowserHandler implements HandlerInterface
         return false;
     }
 
+    /**
+     * @param ErrorException $exception
+     *
+     * @return string
+     */
     private function createErrorType($exception)
     {
         if ($exception instanceof ErrorException) {
@@ -113,6 +151,10 @@ class BrowserHandler implements HandlerInterface
         return '';
     }
 
+    /**
+     * @param Exception $exception
+     * @param string $fileLanguage Path
+     */
     private function createTraceEntries($exception, $fileLanguage)
     {
         $traceArrayEntries = $exception->getTrace();
@@ -129,6 +171,11 @@ class BrowserHandler implements HandlerInterface
         return $traceEntries;
     }
 
+    /**
+     * @param array $traceEntries
+     *
+     * @return array
+     */
     private function filterTracEntriesArray($traceEntries)
     {
         if (
@@ -141,6 +188,11 @@ class BrowserHandler implements HandlerInterface
         return $traceEntries;
     }
 
+    /**
+     * @param ErrorException $exception
+     *
+     * @return array<string, string>
+     */
     private function createClassInformations($exception)
     {
         $result['fullClassName'] = get_class($exception);
@@ -152,6 +204,11 @@ class BrowserHandler implements HandlerInterface
         return $result;
     }
 
+    /**
+     * @param array
+     *
+     * @return void
+     */
     private function show($exeptionMonitorArgs): void
     {
         include __DIR__ . '/../Layout.php';
